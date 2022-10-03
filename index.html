@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>CS 194 Project 3 | Sage Pierone</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="icon" href="images/cameraman.png" type="image/x-icon" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Face Morphing</h1>
+        <h3 class="sub-header">
+          CS 194-26 Project 3 | Sage Pierone | spierone@berkeley.edu
+        </h3>
+        <hr />
+      </header>
+      <div class="content">
+        <div class="overview">
+          <h2>Overview</h2>
+          <p>
+            In this assignment I will produce a "morph" animation of my face
+            into someone else's face, compute the mean of a population of faces
+            and extrapolate from a population mean to create a caricature of
+            someone. A morph is a simultaneous warp of the image shape and a
+            cross-dissolve of the image colors. The cross-dissolve is the easy
+            part; controlling and doing the warp is the hard part. The warp is
+            controlled by defining a correspondence between the two pictures.
+            The correspondence should map eyes to eyes, mouth to mouth, chin to
+            chin, ears to ears, etc., to get the smoothest transformations
+            possible.
+          </p>
+          <hr />
+        </div>
+        <div class="defining-correspondences">
+          <h2>Defining Correspondences</h2>
+          <p>
+            In order to do any image manipulation, we must define correspondence
+            between images. The correspondence should map eyes to eyes, mouth to
+            mouth, chin to chin, ears to ears, etc., to get the smoothest
+            transformations possible. Once we have the points, we can compute
+            Delaunay triangles using the averages of the two sets of points. You
+            will notice in the images below that for each triangle in one, there
+            is a corresponding triangle in the other!
+          </p>
+          <div class="gallery">
+            <div class="row">
+              <figure>
+                <img
+                  src="images/side-by-side.png"
+                  alt="Side by side images of Mark and Ye"
+                />
+                <figcaption>Mark and Ye</figcaption>
+              </figure>
+            </div>
+            <div class="row">
+              <figure>
+                <img
+                  src="images/correspondences.png"
+                  alt="Correspondences for mark and ye"
+                />
+                <figcaption>Correspondences</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+        <div class="midway-face">
+          <h2>Midway Face</h2>
+          <p>
+            We now want to see the midway between the two images. This would
+            involve: 1) computing the average shape (a.k.a the average of each
+            key-point location in the two faces), 2) warping both faces into
+            that shape, and 3) averaging the colors together. In order to warp
+            these we must compute an affine matrix for each triangle. With these
+            matrices we can then use inverse warping to find the pixel mappings
+            from the original image to the mid way image.
+          </p>
+          <div class="gallery">
+            <div class="row">
+              <figure>
+                <img
+                  src="images/shape_shift_zuck.jpg"
+                  alt="Mark Zuckerberg face warped"
+                />
+                <figcaption>Mark Zuckerberg warped to midway shape</figcaption>
+              </figure>
+              <figure>
+                <img
+                  src="images/shape_shift_ye.jpg"
+                  alt="Kanye West face warped"
+                />
+                <figcaption>Kanye West warped to midway shape</figcaption>
+              </figure>
+            </div>
+            <div class="row">
+              <figure>
+                <img
+                  src="images/midway_face_zuck_ye.jpg"
+                  alt="Midway face for Mark and Kanye"
+                />
+                <figcaption>Kanye Zuckerberg</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+        <div class="morph-sequence">
+          <h2>Morph Sequence</h2>
+          <p>
+            With the tools we created to make the midway face, we can expand
+            upon them to create a morph sequence. By combining a sequence of
+            morphed images and adjusting the cross dissolve over the dissolve,
+            we can create the sequence.
+          </p>
+          <div class="row">
+            <figure>
+              <img
+                src="images/zuck_ye.gif"
+                alt="Morph sequence for Kanye and Mark"
+              />
+              <figcaption>Kanye Zuckerberg Morph Sequence</figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="mean-face">
+          <h2>Mean Face of a Population</h2>
+          <p>
+            We can then produce a mean face of a "population" using these
+            methods as well. We can calculate the average shape of a set of
+            faces, warp each image to the average shape, and then average the
+            color to create the mean population.
+          </p>
+          <figure>
+            <div class="row">
+              <figure>
+                <img src="images/01.jpg" alt="Dane 1" />
+              </figure>
+              <figure>
+                <img src="images/02.jpg" alt="Dane 2" />
+              </figure>
+              <figure>
+                <img src="images/03.jpg" alt="Dane 3" />
+              </figure>
+            </div>
+            <div class="row">
+              <figure>
+                <img src="images/04.jpg" alt="Dane 4" />
+              </figure>
+              <figure>
+                <img src="images/05.jpg" alt="Dane 5" />
+              </figure>
+              <figure>
+                <img src="images/06.jpg" alt="Dane 6" />
+              </figure>
+            </div>
+            <figcaption>Some Danes</figcaption>
+          </figure>
+          <p>
+            When we calculate the mean shape, we can see what some of these
+            faces look like warped to the mean shape. Note, the dataset only
+            mapped correspondences for the faces and not the outline of the
+            heads, so places which aren't the face may look funky!
+          </p>
+          <div class="row">
+            <figure>
+              <img src="images/13_mean_face.jpg" alt="Warped Dane 1" />
+            </figure>
+            <figure>
+              <img src="images/26_mean_face.jpg" alt="Warped Dane 2" />
+            </figure>
+            <figure>
+              <img src="images/39_mean_face.jpg" alt="Warped Dane 3" />
+            </figure>
+          </div>
+          <p>Now, with the warped faces we can compute the mean population!</p>
+          <div class="row">
+            <figure>
+              <img src="images/mean_pop.jpg" alt="Mean Population" />
+              <figcaption>Mean Population</figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="caricature">
+          <h2>Caricature</h2>
+          <p>
+            Finally, we can produce a caricature of my face by extrapolating
+            from the population mean.
+          </p>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
